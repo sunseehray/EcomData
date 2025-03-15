@@ -34,7 +34,7 @@ orders = pd.read_csv(path_orders, sep=";")
 path_order_payments = "ecomdataset/Fecom Inc Order Payments.csv"
 payments = pd.read_csv(path_order_payments, sep=";")
 
-# QUESTION 1
+# QUESTION 1 - WHICH COUNTRY HAS THE BIGGEST SALES FOR THE PERIOD
 # Group by country - how to group: https://pandas.pydata.org/docs/user_guide/10min.html#grouping
 # Getting sum based on filters: https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.sum.html
 
@@ -53,9 +53,9 @@ orders_country_payments = pd.merge(orders_country, payments, on="Order_ID", how=
 country_sales = orders_country_payments.groupby("Customer_Country")[["Payment_Value"]].sum()
 print(country_sales)
 
-
-
-
+# this shows the maximum payment_value, but how do I return the name of the country that has that maximum value?
+top_country = country_sales.max()
+print(top_country)
 
 countries = customers["Customer_Country"].dropna().unique()
 print("Num of countries:")

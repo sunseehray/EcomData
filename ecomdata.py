@@ -4,10 +4,9 @@ import numbers as np
 import pandas as pd
 
 # Questions to answer:
-# Which country has the biggest sales for the period?
+# Which country has the biggest sales for the period? - Answer: GERMANY, with total sales of $6,000,401.85
 # Which gender has higher average spending in France?
 
-# Aggregate information by country as sum of sales, then get the country with the highest sum
 # Aggregate information by gender and filter by country, France then sum sales by gender, compare
 
 # Stretch challenge
@@ -15,7 +14,8 @@ import pandas as pd
 # Which MONTH generated lowest sales?
 # Aggregate information by month, sum sales, then get the one with the lowest value.
 
-print("Hello world!")
+print("Hello world! I am Ecom Data Analysis by Sunseehray Tirazona")
+print()
 
 
 # GET DATA
@@ -38,10 +38,8 @@ payments = pd.read_csv(path_order_payments, sep=";")
 # Group by country - how to group: https://pandas.pydata.org/docs/user_guide/10min.html#grouping
 # Getting sum based on filters: https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.sum.html
 
-# To get orders by country, I need customer information
-# From the customer information, I can get the Customer_Country
-
-# Figure out how to merge there three data frames so I can get a list of orders by country and payment value !!!!!!
+# Get country from the Customer List.csv
+# Look for Customer_Country
 
 # merge orders and customer to see which country customer is from
 orders_country = pd.merge(orders, customers, on="Customer_Trx_ID", how="inner")
@@ -49,17 +47,26 @@ orders_country = pd.merge(orders, customers, on="Customer_Trx_ID", how="inner")
 # merge orders_country to see payment_value for each order
 orders_country_payments = pd.merge(orders_country, payments, on="Order_ID", how="inner")
 
-# sales by country -- I DID IT!!!!
+# group by country and get total sales for each using sum()
 country_sales = orders_country_payments.groupby("Customer_Country")[["Payment_Value"]].sum()
+print("Sales by Country:")
 print(country_sales)
+print()
 
 # this shows the maximum payment_value, but how do I return the name of the country that has that maximum value?
-top_country = country_sales.max()
-print(top_country)
+top_country = country_sales.idxmax()
+print("Country with top sales:")
+print(top_country["Payment_Value"])
+print()
+
+top_sales = country_sales.max()
+print("Top country sales:")
+print(top_sales["Payment_Value"])
+print()
 
 countries = customers["Customer_Country"].dropna().unique()
-print("Num of countries:")
-print(len(countries))
+print("Countries:")
+print(countries)
 
 # 27 countries
 # ['France' 'Poland' 'Netherlands' 'Italy' 'Sweden' 'Spain' 'Germany'

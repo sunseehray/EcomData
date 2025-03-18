@@ -8,6 +8,10 @@ import pandas as pd
 print("Hello world! I am Ecom Data Analysis by Sunseehray Tirazona")
 print()
 
+# format number to currency with $ and , up to 2 decimal places
+def formatToCurrency(number):
+    return '${:,.2f}'.format(number)
+
 # Extract data from file
 # https://pandas.pydata.org/docs/user_guide/10min.html#importing-and-exporting-data
 
@@ -65,48 +69,58 @@ print()
 # return value of biggest sales
 top_sales = country_sales["Total_Sales"].max()
 print("How much was that country's sales?")
-print(top_sales)
+print(formatToCurrency(top_sales))
 print()
 
-print("QUESTION 2: Which gender has higher average spending in France?")
-
 # QUESTION 2 - Which gender has higher average spending in France?
+print("QUESTION 2: Which gender has higher average spending in France?")
+print()
+
 # Aggregate by country 
 # Filter France
-
 print("France sales total:")
 france_orders = orders_country[orders_country["Customer_Country"] == "France"]
 france_sales = pd.merge(payments, france_orders, on="Order_ID", how="inner")
 france_sales_total = france_sales["Payment_Value"].sum()
-print(france_sales_total)
+print(formatToCurrency(france_sales_total))
 print()
 
 orders_female = france_orders[france_orders["Gender"] == "Female"]
 sales_female = pd.merge(orders_female, payments, on="Order_ID", how="inner")
 
+print("FEMALES")
 # female total sales
 sales_female_total = sales_female["Payment_Value"].sum()
-print("Total sales from females in France:")
-print(sales_female_total)
+print("Total sales:")
+print(formatToCurrency(sales_female_total))
 # female average sales
 sales_female_average = sales_female["Payment_Value"].mean()
-print("Average sales from females in France:")
-print(sales_female_average)
+print("Average sales:")
+print(formatToCurrency(sales_female_average))
+
+print() 
 
 orders_male = france_orders[france_orders["Gender"] == "Male"]
 sales_male = pd.merge(orders_male, payments, on="Order_ID", how="inner")
 
+print("MALES")
 # male total sales
 sales_male_total = sales_male["Payment_Value"].sum()
-print("Total sales from males in France:")
-print(sales_male_total)
+print("Total sales:")
+print(formatToCurrency(sales_male_total))
 # male average sales
 sales_male_average = sales_male["Payment_Value"].mean()
-print("Average sales from males in France")
-print(sales_male_average)
+print("Average sales:")
+print(formatToCurrency(sales_male_average))
 
-# Aggregate by gender
-# Sum? or does aggregate get the sum automatically?
+print()
+
+# Result
+print("RESULT:")
+if (sales_female_average > sales_male_average):
+    print("Females in France have a higher average spending compared to males.")
+else:
+    print("Males in France have a higher average spending compared to females.")
 
 # STRETCH QUESTION 3
 # Filter sales by year
@@ -130,3 +144,4 @@ print(orders_2023)
 print("All orders:")
 # 99441
 print(len(orders))
+

@@ -3,6 +3,7 @@
 # https://www.kaggle.com/datasets/cemeraan/fecom-inc-e-com-marketplace-orders-data-crm
 
 # pip install pandas
+import numpy as np
 import pandas as pd
 
 print("Hello world! I am Ecom Data Analysis by Sunseehray Tirazona")
@@ -20,8 +21,12 @@ path_customers = "ecomdataset/Fecom Inc Customer List.csv"
 customers = pd.read_csv(path_customers, sep=";")
 
 # Order List
+# parsed order purchase timestamp to datetime for stretch / question 3
+# How to turn string into datetime
+# https://docs.python.org/3/library/datetime.html#strftime-and-strptime-behavior
+# https://pandas.pydata.org/docs/getting_started/intro_tutorials/09_timeseries.html
 path_orders = "ecomdataset/Fecom Inc Orders.csv"
-orders = pd.read_csv(path_orders, sep=";")
+orders = pd.read_csv(path_orders, sep=";", parse_dates=["Order_Purchase_Timestamp"])
 
 # Order Payments
 path_order_payments = "ecomdataset/Fecom Inc Order Payments.csv"
@@ -31,28 +36,14 @@ payments = pd.read_csv(path_order_payments, sep=";")
 # Group by country - how to group: https://pandas.pydata.org/docs/user_guide/10min.html#grouping
 # Getting sum based on filters: https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.sum.html
 
-# Get country from the Customer List.csv
-# Look for Customer_Country
-
-# countries = customers["Customer_Country"].dropna().unique()
-# print("Countries:")
-# print(countries)
-# print()
-
-# 27 countries
-# ['France' 'Poland' 'Netherlands' 'Italy' 'Sweden' 'Spain' 'Germany'
-#  'Czechia' 'Belgium' 'Greece' 'Switzerland' 'United Kingdom' 'Austria'
-#  'Norway' 'Portugal' 'Turkey' 'Luxembourg' 'Slovakia' 'Serbia' 'Slovenia'
-#  'Latvia' 'Lithuania' 'Denmark' 'Croatia' 'Estonia' 'Andorra' 'Finland']
-
+print("QUESTION 1: Which country had the biggest sales?")
+print()
 # merge orders and customer to see which country customer is from
 orders_country = pd.merge(orders, customers, on="Customer_Trx_ID", how="inner")
 
 # merge orders_country to see payment_value for each order
 orders_country_payments = pd.merge(orders_country, payments, on="Order_ID", how="inner")
 
-print("QUESTION 1: Which country had the biggest sales?")
-print()
 # group by country and get total sales for each using sum()
 country_sales = orders_country_payments.groupby("Customer_Country")[["Payment_Value"]].sum().rename(columns={"Payment_Value": "Total_Sales"})
 country_sales = country_sales.sort_values(by="Total_Sales", ascending=False)
@@ -122,26 +113,41 @@ if (sales_female_average > sales_male_average):
 else:
     print("Males in France have a higher average spending compared to females.")
 
-# STRETCH QUESTION 3
-# Filter sales by year
-# Aggregate by month
-# Find MAX value
-
+# STRETCH QUESTION 3 - Which MONTH generated lowest sales in 2024?
 # Stretch challenge
-# Question 3 - Which MONTH generated lowest sales in 2024?
 # Aggregate information by month, sum sales, then get the one with the lowest value.
+# Filter sales by year
+print()
+print("QUESTION 3 - Which month generated the lowest sales in 2024?")
 
-# Try graphing if time permits
+# Merge orders with payments to see date and payment value together
+paid_orders = pd.merge(orders, payments, on="Order_ID", how="inner")
 
-print("---------Just backend stuff--------------")
-# get from Orders list of orders where year is 2023
-orders_2023 = orders[orders["Order_Approved_At"].astype(str).str[:4] == "2023"].shape[0]
+# Get orders for 2024 only
+paid_orders2024 = paid_orders[paid_orders["Order_Purchase_Timestamp"].dt.year == 2024]
+paid_orders2024 = paid_orders2024.sort_values("Order_Purchase_Timestamp")
 
-print("2023 orders: ")
-# 44973
-print(orders_2023)
+# Verifying sum for month 10
+print(paid_orders2024[["Order_ID", "Order_Purchase_Timestamp", "Payment_Value"]].tail(5))
 
-print("All orders:")
-# 99441
-print(len(orders))
+# Aggregate by month
+month_sales_2024 = paid_orders2024.groupby(paid_orders2024["Order_Purchase_Timestamp"].dt.month)[["Payment_Value"]].sum().rename(columns={ "Payment_Value": "Month_Total" })
+print("Sales by month:")
+print(month_sales_2024)
+print()
+
+# Find MIN value
+# return month with lowest sales
+top_month = month_sales_2024["Month_Total"].idxmin()
+print("Which month has the lowest sales?")
+print(top_month)
+print()
+
+# return value of lowest sales
+top_month_sales = month_sales_2024["Month_Total"].min()
+print("How much was that month's sales?")
+print(formatToCurrency(top_month_sales))
+print()
+
+print("END OF DATA ANALYSIS. THANK YOU!")
 

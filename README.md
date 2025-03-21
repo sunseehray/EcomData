@@ -1,34 +1,38 @@
 # Overview
 
-{Important!  Do not say in this section that this is college assignment.  Talk about what you are trying to accomplish as a software engineer to further your learning.}
+As an aspiring software developer, one of the things I am interested in getting into is Data Analysis. This project is my take on data analysis for a fictional e-commerce data taken from Kaggle. It's a company based in Berlin Germany with customers from around 28 countries. Data contains sales from 2022-2024.
 
-{Provide a description of the data set that you are analyzing.  Include the link of where you obtained the data.}
+You can access the data from this [Link](https://www.kaggle.com/datasets/cemeraan/fecom-inc-e-com-marketplace-orders-data-crm)
 
-{Describe your purpose for writing this software to analyze the data.}
+My purpose for writing this software is to develop ways to examine seasonal behaviors such as which month generated lowest sales and customer behaviors such as which gender has a higher average spending and which country generated the biggest sales.
 
-{Provide a link to your YouTube demonstration.  It should be a 4-5 minute demo of the data set, the questions and answers, the code running and a walkthrough of the code.}
-
-[Software Demo Video](http://youtube.link.goes.here)
+[Software Demo Video](https://youtu.be/tphQXgqiSbs)
 
 # Data Analysis Results
 
-{List the questions and the answers you found by doing this analysis.}
+Question 1: Which country had the biggest sales?
+Answer: Germany
+
+Question 2: Which gender has the higher average spending in France?
+Answer: Females
+
+Question 3: Which month in 2024 generated the lowest sales?
+Answer: October
 
 # Development Environment
 
-{Describe the tools that you used to develop the software}
-
-{Describe the programming language that you used and any libraries.}
+* Python 3.13.2 - programming language
+* Pandas - library for data analysis in Python
+* Visual Studio Code - IDE
+* GitHub / Git - Version Control
 
 # Useful Websites
 
-{Make a list of websites that you found helpful in this project}
-* [Web Site Name](http://url.link.goes.here)
-* [Web Site Name](http://url.link.goes.here)
+* [Python Docs datetime behavior](https://docs.python.org/3/library/datetime.html#strftime-and-strptime-behavior)
+* [Pandas 10-minute Tutorial](https://pandas.pydata.org/docs/user_guide/10min.html#)
 
 # Future Work
 
-{Make a list of things that you need to fix, improve, and add in the future.}
-* Item 1
-* Item 2
-* Item 3
+* Plot results in a graph
+* Answer more questions such as yearly sales and best-selling products
+* Improve code architecture
